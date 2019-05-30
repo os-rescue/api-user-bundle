@@ -1,0 +1,58 @@
+email:
+    creating:
+        subject: 'Bienvenue %username% !'
+        message: |
+            Bonjour %username% !
+
+            Pour valider votre compte utilisateur, merci de vous rendre sur %confirmationUrl%
+
+            Ce lien ne peut être utilisé qu'une seule fois pour valider votre compte.
+
+            Cordialement,
+            L'équipe
+    updating:
+        subject: 'Bienvenue %username% !'
+        message: |
+            Bonjour %username% !
+
+            Votre adresse mail a été modifiée. Pour réactiver de nouveau votre compte, merci de vous rendre sur %confirmationUrl%
+
+            Ce lien ne peut être utilisé qu'une seule fois pour réactiver votre compte.
+
+            Cordialement,
+            L'équipe
+
+password:
+    changing:
+        subject: 'Votre mot de passe a été modifié !'
+        message: |
+            Bonjour %username% !
+
+            Votre mot de passe a récemment été modifié. Si vous faites ce changement, alors tout est prêt.
+
+            Si vous n'avez pas apporté cette modification, veuillez nous contacter immédiatement.
+
+            Cordialement,
+            L'équipe
+
+    setting:
+        subject: 'Activation du compte administrateur'
+        message: |
+            Bonjour %username% !
+
+            Votre compte a été activé avec succès.
+
+            Nous vous remercions d’utiliser nos services.
+
+            Cordialement,
+            L'équipe
+
+    resetting:
+        subject: 'Réinitialisation de votre mot de passe'
+        message: |
+            Bonjour %username% !
+
+            Pour réinitialiser votre mot de passe, merci de vous rendre sur %confirmationUrl%
+
+            Cordialement,
+            L'équipe

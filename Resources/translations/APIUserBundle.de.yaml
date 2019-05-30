@@ -1,0 +1,58 @@
+email:
+    creating:
+        subject: 'Willkommen %username%!'
+        message: |
+            Hallo %username%!
+
+            Besuchen Sie bitte folgende Seite, um Ihr Benutzerkonto zu bestätigen: %confirmationUrl%
+
+            Dieser Link kann nur zur Überprüfung Ihres Kontos verwendet werden.
+
+            Mit besten Grüßen,
+            das Team.
+    updating:
+        subject: 'Willkommen %username%!'
+        message: |
+            Hallo %username%!
+
+            Ihre E-Mail-Adresse wurde aktualisiert. Um Ihr Konto wieder zu aktivieren, um Ihr Benutzerkonto zu bestätigen: %confirmationUrl%
+
+            Dieser Link kann nur einmal verwendet werden, um Ihr Konto erneut zu bestätigen.
+
+            Mit besten Grüßen,
+            das Team.
+
+password:
+    changing:
+        subject: 'Password Changed !'
+        message: |
+            Hallo %username% !
+
+            Ihr Passwort wurde kürzlich geändert. Wenn Sie diese Änderung vorgenommen haben, sind wir fertig.
+
+            Wenn Sie diese Änderung nicht vorgenommen haben, kontaktieren Sie uns bitte umgehend.
+
+            Mit besten Grüßen,
+            das Team.
+
+    setting:
+        subject: 'Administrator Account wurde aktiviert'
+        message: |
+            Hallo %username% !
+
+            Ihr Account wurde erfolgreich aktiviert.
+
+            Vielen Dank, dass Sie unseren Service nutzen.
+
+            Mit besten Grüßen,
+            das Team.
+
+    resetting:
+        subject: 'Passwort zurücksetzen'
+        message: |
+            Hallo %username%!
+
+            Besuchen Sie bitte folgende Seite, um Ihr Passwort zurückzusetzen: %confirmationUrl%
+
+            Mit besten Grüßen,
+            das Team.

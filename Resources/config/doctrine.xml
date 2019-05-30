@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
+
+        <prototype namespace="API\UserBundle\Doctrine\" resource="../../Doctrine" />
+
+        <service id="API\UserBundle\Doctrine\UserListener">
+            <tag name="doctrine.event_subscriber" event="prePersist" />
+            <tag name="doctrine.event_subscriber" event="preUpdate" />
+        </service>
+
+        <service id="api_user.object_manager" class="Doctrine\Common\Persistence\ObjectManager">
+            <factory service="doctrine" method="getManager"/>
+        </service>
+
+        <service id="API\UserBundle\Doctrine\UserManager">
+            <argument key="$om" type="service" id="api_user.object_manager" />
+            <argument key="$class">%api_user.model.user.class%</argument>
+        </service>
+    </services>
+
+</container>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter type="collection" key="api_user.mailer.parameters">
+            <parameter key="email.creating.template">%api_user.email.creating.template%</parameter>
+            <parameter key="email.updating.template">%api_user.email.updating.template%</parameter>
+            <parameter key="password.changing.template">%api_user.password.changing.template%</parameter>
+            <parameter key="password.setting.template">%api_user.password.setting.template%</parameter>
+            <parameter key="password.resetting.template">%api_user.password.resetting.template%</parameter>
+            <parameter key="from_email" type="collection">
+                <parameter key="email">%api_user.email.from_email%</parameter>
+                <parameter key="password">%api_user.password.from_email%</parameter>
+            </parameter>
+        </parameter>
+    </parameters>
+
+    <services>
+        <service id="API\UserBundle\Mailer\EmailTemplateUrlGenerator" public="false">
+            <argument type="service" id="router" />
+        </service>
+        <service id="API\UserBundle\Mailer\EmailTemplateRenderer" public="false">
+            <argument type="service" id="templating" />
+            <argument type="service" id="API\UserBundle\Mailer\EmailTemplateUrlGeneratorInterface" />
+        </service>
+        <service id="API\UserBundle\Mailer\Mailer" public="false">
+            <argument type="service" id="mailer" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="API\UserBundle\Mailer\EmailTemplateRendererInterface" />
+            <argument>%api_user.mailer.parameters%</argument>
+            <tag name="api_user.requires_swift" />
+        </service>
+    </services>
+
+</container>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
+
+        <prototype namespace="API\UserBundle\MessageHandler\" resource="../../MessageHandler" />
+
+        <service id="API\UserBundle\MessageHandler\ResetPasswordRequestHandler">
+            <argument key="$retryTtl">%api_user.password.resetting.retry_ttl%</argument>
+            <tag name="messenger.message_handler" bus="messenger.bus.user_account"></tag>
+        </service>
+
+
+        <service id="API\UserBundle\MessageHandler\AsyncEmailUpdatingHandler">
+            <tag name="messenger.message_handler" bus="messenger.bus.user_account"></tag>
+        </service>
+    </services>
+
+</container>

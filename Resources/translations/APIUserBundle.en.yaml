@@ -1,0 +1,58 @@
+email:
+    creating:
+        subject: 'Welcome %username% !'
+        message: |
+            Hello %username%!
+
+            To finish activating your account - please visit %confirmationUrl%
+
+            This link can only be used once to validate your account.
+
+            Regards,
+            the Team.
+    updating:
+        subject: 'Welcome %username% !'
+        message: |
+            Hello %username%!
+
+            Your email address has been updated. To activate your account again - please visit %confirmationUrl%
+
+            This link can only be used once to re-validate your account.
+
+            Regards,
+            the Team.
+
+password:
+    changing:
+        subject: 'Password Changed !'
+        message: |
+            Hello %username% !
+
+            Your password was recently changed. If you made this change, then we're all set.
+
+            If you did not make this change, please contact us immediately.
+
+            Regards,
+            the Team.
+
+    setting:
+        subject: 'Admin account activated'
+        message: |
+            Hello %username% !
+
+            Your account has been successfully activated.
+
+            Thank you for using our service.
+
+            Regards,
+            the Team.
+
+    resetting:
+        subject: 'Reset Password'
+        message: |
+            Hello %username%!
+
+            To reset your password - please visit %confirmationUrl%
+
+            Regards,
+            the Team.

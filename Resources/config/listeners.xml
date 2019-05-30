@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
+
+        <service id="API\UserBundle\EventListener\AuthenticationListener" />
+
+        <service id="API\UserBundle\EventListener\AuthenticationFailureListener" />
+
+        <service id="API\UserBundle\EventListener\TokenListener" />
+
+        <service id="API\UserBundle\EventListener\LogoutListener" />
+
+        <service id="API\UserBundle\EventListener\EmailConfirmationListener" />
+
+        <service id="API\UserBundle\EventListener\PasswordChangingListener" />
+
+        <service id="API\UserBundle\EventListener\PasswordSettingListener" />
+
+        <service id="API\UserBundle\EventListener\ResetPasswordRequestSubscriber">
+            <argument key="$retryTtl">%api_user.password.resetting.retry_ttl%</argument>
+        </service>
+
+        <service id="API\UserBundle\EventListener\PasswordResettingListener">
+            <argument key="$tokenTtl">%api_user.password.resetting.token_ttl%</argument>
+        </service>
+
+        <service id="api_user.listener.exception" class="API\UserBundle\EventListener\ExceptionListener">
+            <argument>api_platform.action.exception</argument>
+            <argument type="service" id="logger" on-invalid="null" />
+
+            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" />
+            <tag name="monolog.logger" channel="request" />
+        </service>
+    </services>
+
+</container>

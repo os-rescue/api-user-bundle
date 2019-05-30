@@ -1,0 +1,13 @@
+{% trans_default_domain 'APIUserBundle' %}
+{% block subject %}
+{%- autoescape false -%}
+{{ 'email.updating.email.subject'|trans({'%username%': user.username}) }}
+{%- endautoescape -%}
+{% endblock %}
+
+{% block body_text %}
+{% autoescape false %}
+{{ 'email.updating.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl}) }}
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}{% endblock %}
