@@ -78,6 +78,7 @@ class APIUserExtension extends Extension
 
         $this->loadEmail($config['email'], $container, $config['from_email']);
         $this->loadPassword($config['password'], $container, $config['from_email']);
+        $this->loadRole($config['role'], $container, $config['from_email']);
     }
 
     private function loadEmail(array $config, ContainerBuilder $container, array $fromEmail)
@@ -131,6 +132,23 @@ class APIUserExtension extends Extension
         $container->setParameter(
             'api_user.password.resetting.template',
             $config['resetting']['template']
+        );
+    }
+
+    private function loadRole(array $config, ContainerBuilder $container, array $fromEmail)
+    {
+        if (isset($config['from_email'])) {
+            $fromEmail = $config['from_email'];
+            unset($config['from_email']);
+        }
+
+        $container->setParameter(
+            'api_user.user.from_email',
+            [$fromEmail['address'] => $fromEmail['sender_name']]
+        );
+        $container->setParameter(
+            'api_user.role.promoting.template',
+            $config['promoting']['template']
         );
     }
 }

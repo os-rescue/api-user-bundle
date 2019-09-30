@@ -56,3 +56,14 @@ password:
 
             Regards,
             the Team.
+
+user:
+    promoting:
+        subject: 'You are now an Admin'
+        message: |
+            Hello %username% !
+
+            You have been granted with Administrator rights
+
+            Regards,
+            the Team.

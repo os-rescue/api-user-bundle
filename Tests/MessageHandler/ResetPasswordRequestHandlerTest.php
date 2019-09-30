@@ -43,9 +43,13 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->with(['email' => 'foo'])
             ->willReturn(null)
         ;
+        $this->userManager
+            ->expects($this->never())
+            ->method('refreshUser')
+        ;
         $this->user
             ->expects($this->never())
-            ->method('isPasswordRequestNonExpired')
+            ->method('isAccountNonLocked')
         ;
         $this->user
             ->expects($this->never())
@@ -63,9 +67,56 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->expects($this->never())
             ->method('setConfirmationToken')
         ;
+        $this->user
+            ->expects($this->never())
+            ->method('setPasswordRequestedAt')
+        ;
+        $this->userManager
+            ->expects($this->never())
+            ->method('updateUser')
+        ;
         $this->mailer
             ->expects($this->never())
             ->method('sendPasswordResettingEmailMessage')
+        ;
+
+        $resetPasswordRequestHandler = $this->getInstance();
+        $resetPasswordRequestHandler($this->resetPasswordRequest);
+    }
+
+    public function testResetPasswordRequestHandlerWithLockedAccount(): void
+    {
+        $this->userManager
+            ->expects($this->once())
+            ->method('findUserBy')
+            ->with(['email' => 'foo'])
+            ->willReturn($this->user)
+        ;
+        $this->userManager
+            ->expects($this->once())
+            ->method('refreshUser')
+            ->with($this->user)
+        ;
+        $this->user
+            ->expects($this->once())
+            ->method('isAccountNonLocked')
+            ->willReturn(false)
+        ;
+        $this->user
+            ->expects($this->never())
+            ->method('isPasswordRequestNonExpired')
+        ;
+        $this->user
+            ->expects($this->never())
+            ->method('getConfirmationToken')
+        ;
+        $this->tokenGenerator
+            ->expects($this->never())
+            ->method('generateToken')
+        ;
+        $this->user
+            ->expects($this->never())
+            ->method('setConfirmationToken')
         ;
         $this->user
             ->expects($this->never())
@@ -75,18 +126,32 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->expects($this->never())
             ->method('updateUser')
         ;
+        $this->mailer
+            ->expects($this->never())
+            ->method('sendPasswordResettingEmailMessage')
+        ;
 
         $resetPasswordRequestHandler = $this->getInstance();
         $resetPasswordRequestHandler($this->resetPasswordRequest);
     }
 
-    public function testResetPasswordRequestHandlerWithExpiredRequest(): void
+    public function testResetPasswordRequestHandlerWithNonExpiredRequest(): void
     {
         $this->userManager
             ->expects($this->once())
             ->method('findUserBy')
             ->with(['email' => 'foo'])
             ->willReturn($this->user)
+        ;
+        $this->userManager
+            ->expects($this->once())
+            ->method('refreshUser')
+            ->with($this->user)
+        ;
+        $this->user
+            ->expects($this->once())
+            ->method('isAccountNonLocked')
+            ->willReturn(true)
         ;
         $this->user
             ->expects($this->once())
@@ -106,10 +171,6 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->expects($this->never())
             ->method('setConfirmationToken')
         ;
-        $this->mailer
-            ->expects($this->never())
-            ->method('sendPasswordResettingEmailMessage')
-        ;
         $this->user
             ->expects($this->never())
             ->method('setPasswordRequestedAt')
@@ -117,6 +178,10 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
         $this->userManager
             ->expects($this->never())
             ->method('updateUser')
+        ;
+        $this->mailer
+            ->expects($this->never())
+            ->method('sendPasswordResettingEmailMessage')
         ;
 
         $resetPasswordRequestHandler = $this->getInstance();
@@ -130,6 +195,16 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->method('findUserBy')
             ->with(['email' => 'foo'])
             ->willReturn($this->user)
+        ;
+        $this->userManager
+            ->expects($this->once())
+            ->method('refreshUser')
+            ->with($this->user)
+        ;
+        $this->user
+            ->expects($this->once())
+            ->method('isAccountNonLocked')
+            ->willReturn(true)
         ;
         $this->user
             ->expects($this->once())
@@ -152,11 +227,6 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->method('setConfirmationToken')
             ->with('bar')
         ;
-        $this->mailer
-            ->expects($this->once())
-            ->method('sendPasswordResettingEmailMessage')
-            ->with($this->user)
-        ;
         $this->user
             ->expects($this->once())
             ->method('setPasswordRequestedAt')
@@ -165,6 +235,11 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
         $this->userManager
             ->expects($this->once())
             ->method('updateUser')
+            ->with($this->user)
+        ;
+        $this->mailer
+            ->expects($this->once())
+            ->method('sendPasswordResettingEmailMessage')
             ->with($this->user)
         ;
 
@@ -179,6 +254,16 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->method('findUserBy')
             ->with(['email' => 'foo'])
             ->willReturn($this->user)
+        ;
+        $this->userManager
+            ->expects($this->once())
+            ->method('refreshUser')
+            ->with($this->user)
+        ;
+        $this->user
+            ->expects($this->once())
+            ->method('isAccountNonLocked')
+            ->willReturn(true)
         ;
         $this->user
             ->expects($this->once())
@@ -199,11 +284,6 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->expects($this->never())
             ->method('setConfirmationToken')
         ;
-        $this->mailer
-            ->expects($this->once())
-            ->method('sendPasswordResettingEmailMessage')
-            ->with($this->user)
-        ;
         $this->user
             ->expects($this->once())
             ->method('setPasswordRequestedAt')
@@ -212,6 +292,11 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
         $this->userManager
             ->expects($this->once())
             ->method('updateUser')
+            ->with($this->user)
+        ;
+        $this->mailer
+            ->expects($this->once())
+            ->method('sendPasswordResettingEmailMessage')
             ->with($this->user)
         ;
 
@@ -230,6 +315,16 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->with(['email' => 'foo'])
             ->willReturn($this->user)
         ;
+        $this->userManager
+            ->expects($this->once())
+            ->method('refreshUser')
+            ->with($this->user)
+        ;
+        $this->user
+            ->expects($this->once())
+            ->method('isAccountNonLocked')
+            ->willReturn(true)
+        ;
         $this->user
             ->expects($this->once())
             ->method('isPasswordRequestNonExpired')
@@ -249,11 +344,6 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->expects($this->never())
             ->method('setConfirmationToken')
         ;
-        $this->mailer
-            ->expects($this->once())
-            ->method('sendPasswordResettingEmailMessage')
-            ->with($this->user)
-        ;
         $this->user
             ->expects($this->once())
             ->method('setPasswordRequestedAt')
@@ -264,6 +354,10 @@ class ResetPasswordRequestHandlerTest extends KernelTestCase
             ->method('updateUser')
             ->with($this->user)
             ->willThrowException(new \PDOException())
+        ;
+        $this->mailer
+            ->expects($this->never())
+            ->method('sendPasswordResettingEmailMessage')
         ;
 
         $resetPasswordRequestHandler = $this->getInstance();

@@ -16,7 +16,6 @@ class SendPasswordSettingEmailMessageTest extends BaseMailerTestCase
 
         $this->mailer = new Mailer(
             $this->swiftMailer,
-            $this->eventDispatcher,
             $this->renderer,
             $this->parameters
         );

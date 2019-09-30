@@ -4,7 +4,7 @@ namespace API\UserBundle\Tests\Mailer;
 
 use API\UserBundle\Mailer\Mailer;
 
-class SendEmailCreatingConfirmationEmailMessageTest extends BaseMailerTestCase
+class SendRolePromotingEmailMessageTest extends BaseMailerTestCase
 {
     private $mailer;
 
@@ -12,7 +12,7 @@ class SendEmailCreatingConfirmationEmailMessageTest extends BaseMailerTestCase
     {
         parent::setUp();
 
-        $this->parameters['email.creating.template'] = 'foo';
+        $this->parameters['role.promoting.template'] = 'foo';
 
         $this->mailer = new Mailer(
             $this->swiftMailer,
@@ -24,7 +24,7 @@ class SendEmailCreatingConfirmationEmailMessageTest extends BaseMailerTestCase
     /**
      * @dataProvider validEmailProvider
      */
-    public function testSendEmailCreatingConfirmationEmailMessageWithValidEmail(string $emailAddress): void
+    public function testSendRolePromotingEmailMessageWithValidEmail(string $emailAddress): void
     {
         $this->setUserData($emailAddress);
 
@@ -33,13 +33,12 @@ class SendEmailCreatingConfirmationEmailMessageTest extends BaseMailerTestCase
             ->method('render')
             ->with(
                 $this->user,
-                $this->parameters['email.creating.template'],
-                'api_user_confirm_email'
+                $this->parameters['role.promoting.template']
             )
             ->willReturn('foo_content')
         ;
 
-        $this->mailer->sendEmailCreatingConfirmationEmailMessage($this->user);
+        $this->mailer->sendRolePromotingEmailMessage($this->user);
 
         $this->assertSame(1, $this->testEmailListener->getSendEmailCount());
 
@@ -57,9 +56,9 @@ class SendEmailCreatingConfirmationEmailMessageTest extends BaseMailerTestCase
      * @dataProvider invalidEmailProvider
      * @expectedException \Swift_RfcComplianceException
      */
-    public function testSendEmailCreatingConfirmationEmailMessageWithInvalidEmails(string $emailAddress): void
+    public function testSendRolePromotingEmailMessageWithInvalidEmails(string $emailAddress): void
     {
         $this->setUserData($emailAddress);
-        $this->mailer->sendEmailCreatingConfirmationEmailMessage($this->user);
+        $this->mailer->sendRolePromotingEmailMessage($this->user);
     }
 }

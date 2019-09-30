@@ -56,3 +56,14 @@ password:
 
             Cordialement,
             L'équipe
+
+user:
+    promoting:
+        subject: 'Vous êtes maintenant un administrateur'
+        message: |
+            Bonjour %username% !
+
+            Vous disposez désormais des droits d’administrateur
+
+            Cordialement,
+            L'équipe

@@ -2,13 +2,20 @@
 
 namespace API\UserBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
  *     collectionOperations={
  *         "post"={
+ *              "messenger"=true,
+ *              "output"=false,
+ *              "_api_persist"=false,
+ *              "_api_respond"=false,
  *              "summary"="Send email with token to reset password.",
  *              "path"="/reset-password-request",
  *              "status"=202,
@@ -41,14 +48,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              }
  *          }
  *     },
- *     itemOperations={},
- *     output=false
+ *     itemOperations={"get"},
+ *     output=false,
  * )
  */
 final class ResetPasswordRequest
 {
     /**
-     * @var string The email of the user.
+     * @ApiProperty(identifier=true)
+     */
+    public $id;
+
+    /**
      *
      * @Assert\Email(message="invalid")
      * @Assert\Length(
@@ -61,4 +72,9 @@ final class ResetPasswordRequest
      * @Assert\NotBlank(message="not_blank")
      */
     public $email;
+
+    public function getId(): int
+    {
+        return mt_rand();
+    }
 }

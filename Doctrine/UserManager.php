@@ -44,6 +44,11 @@ final class UserManager extends BaseUserManager
         return $this->getRepository()->findOneBy($criteria);
     }
 
+    public function refreshUser(UserInterface $user): void
+    {
+        $this->objectManager->refresh($user);
+    }
+
     public function updateUser(UserInterface $user, $andFlush = true): void
     {
         $this->updateCanonicalFields($user);

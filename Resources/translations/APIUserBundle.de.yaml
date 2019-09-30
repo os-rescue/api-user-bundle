@@ -56,3 +56,14 @@ password:
 
             Mit besten Grüßen,
             das Team.
+
+user:
+    promoting:
+        subject: 'Sie sind nun ein Admin'
+        message: |
+            Hallo %username% !
+
+            Ihnen wurden Admin-Rechte
+
+            Mit besten Grüßen,
+            das Team.

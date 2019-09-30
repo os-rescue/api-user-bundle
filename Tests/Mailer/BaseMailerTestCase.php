@@ -9,7 +9,6 @@ use API\UserBundle\Tests\Common\TestEmailListener;
 
 class BaseMailerTestCase extends EventDispatcherTestCase
 {
-    protected $eventDispatcher;
     protected $translator;
     protected $swiftMailer;
     protected $testEmailListener;
@@ -27,7 +26,6 @@ class BaseMailerTestCase extends EventDispatcherTestCase
         parent::setUp();
 
         $this->swiftMailer = self::$container->get('mailer');
-        $this->eventDispatcher = self::$container->get('test.API\UserBundle\Tests\Common\TestEventDispatcher');
         $this->testEmailListener = self::$container->get(TestEmailListener::class);
 
         $this->user = $this->getMockBuilder(UserInterface::class)->getMock();

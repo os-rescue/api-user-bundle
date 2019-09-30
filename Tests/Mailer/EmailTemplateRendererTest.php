@@ -2,14 +2,17 @@
 
 namespace API\UserBundle\Tests\Mailer;
 
+use API\UserBundle\Event\UserEvent;
 use API\UserBundle\Mailer\EmailTemplateRenderer;
 use API\UserBundle\Mailer\EmailTemplateUrlGeneratorInterface;
 use API\UserBundle\Model\UserInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EmailTemplateRendererTest extends TestCase
 {
+    private $eventDispatcher;
     private $templating;
     private $emailTemplateUrlGenerator;
     private $user;
@@ -26,10 +29,16 @@ class EmailTemplateRendererTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
+        $this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
     }
 
     public function testRenderWithEmptyRoute(): void
     {
+        $this->eventDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(UserEvent::SENT_MAIL, $this->isInstanceOf(UserEvent::class))
+        ;
         $this->user
             ->expects($this->once())
             ->method('getConfirmationToken')
@@ -48,12 +57,22 @@ class EmailTemplateRendererTest extends TestCase
             ->willReturn('foo_content')
         ;
 
-        $emailTemplateRenderer = new EmailTemplateRenderer($this->templating, $this->emailTemplateUrlGenerator);
+        $emailTemplateRenderer = new EmailTemplateRenderer(
+            $this->eventDispatcher,
+            $this->templating,
+            $this->emailTemplateUrlGenerator
+        )
+        ;
         $emailTemplateRenderer->render($this->user, 'foo');
     }
 
     public function testRenderWithSettingRoute(): void
     {
+        $this->eventDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(UserEvent::SENT_MAIL, $this->isInstanceOf(UserEvent::class))
+        ;
         $token = 'foobar';
         $this->user
             ->expects($this->once())
@@ -74,12 +93,22 @@ class EmailTemplateRendererTest extends TestCase
             ->willReturn('foo_content')
         ;
 
-        $emailTemplateRenderer = new EmailTemplateRenderer($this->templating, $this->emailTemplateUrlGenerator);
+        $emailTemplateRenderer = new EmailTemplateRenderer(
+            $this->eventDispatcher,
+            $this->templating,
+            $this->emailTemplateUrlGenerator
+        )
+        ;
         $emailTemplateRenderer->render($this->user, 'foo', 'bar');
     }
 
     public function testRenderWithAdditionRouteParams(): void
     {
+        $this->eventDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(UserEvent::SENT_MAIL, $this->isInstanceOf(UserEvent::class))
+        ;
         $token = 'foobar';
         $this->user
             ->expects($this->once())
@@ -100,7 +129,12 @@ class EmailTemplateRendererTest extends TestCase
             ->willReturn('foo_content')
         ;
 
-        $emailTemplateRenderer = new EmailTemplateRenderer($this->templating, $this->emailTemplateUrlGenerator);
+        $emailTemplateRenderer = new EmailTemplateRenderer(
+            $this->eventDispatcher,
+            $this->templating,
+            $this->emailTemplateUrlGenerator
+        )
+        ;
         $emailTemplateRenderer->render($this->user, 'foo', 'bar', ['param1' => 'value1']);
     }
 }

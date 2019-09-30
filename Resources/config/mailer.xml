@@ -11,6 +11,7 @@
             <parameter key="password.changing.template">%api_user.password.changing.template%</parameter>
             <parameter key="password.setting.template">%api_user.password.setting.template%</parameter>
             <parameter key="password.resetting.template">%api_user.password.resetting.template%</parameter>
+            <parameter key="role.promoting.template">%api_user.role.promoting.template%</parameter>
             <parameter key="from_email" type="collection">
                 <parameter key="email">%api_user.email.from_email%</parameter>
                 <parameter key="password">%api_user.password.from_email%</parameter>
@@ -23,12 +24,12 @@
             <argument type="service" id="router" />
         </service>
         <service id="API\UserBundle\Mailer\EmailTemplateRenderer" public="false">
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="templating" />
             <argument type="service" id="API\UserBundle\Mailer\EmailTemplateUrlGeneratorInterface" />
         </service>
         <service id="API\UserBundle\Mailer\Mailer" public="false">
             <argument type="service" id="mailer" />
-            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="API\UserBundle\Mailer\EmailTemplateRendererInterface" />
             <argument>%api_user.mailer.parameters%</argument>
             <tag name="api_user.requires_swift" />

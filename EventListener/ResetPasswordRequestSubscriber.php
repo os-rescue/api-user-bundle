@@ -7,9 +7,7 @@ use ApiPlatform\Core\EventListener\EventPriorities;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Exception\LockedException;
 
 class ResetPasswordRequestSubscriber implements EventSubscriberInterface
 {
@@ -43,15 +41,15 @@ class ResetPasswordRequestSubscriber implements EventSubscriberInterface
         $user = $this->userManager->findUserBy(['email' => $content->email]);
 
         if (!$user) {
-            throw new NotFoundHttpException('user.not_found.');
+            throw new BadRequestHttpException();
         }
 
         if (!$user->isAccountNonLocked()) {
-            throw new LockedException('user.account_locked.');
+            throw new BadRequestHttpException();
         }
 
         if ($user->isPasswordRequestNonExpired($this->retryTtl)) {
-            throw new BadRequestHttpException('user.check_email.');
+            throw new BadRequestHttpException();
         }
     }
 }

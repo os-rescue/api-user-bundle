@@ -42,6 +42,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->addEmailNode())
                 ->append($this->addPasswordNode())
                 ->append($this->addEmailNode())
+                ->append($this->addRoleNode())
                 ->append($this->addServiceNode())
             ->end();
 
@@ -143,6 +144,32 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('email_canonicalizer')->defaultValue(Canonicalizer::class)->end()
                 ->scalarNode('username_canonicalizer')->defaultValue(Canonicalizer::class)->end()
                 ->scalarNode('token_generator')->defaultValue(TokenGenerator::class)->end()
+            ->end();
+
+        return $node;
+    }
+
+    private function addRoleNode(): NodeDefinition
+    {
+        $treeBuilder = new TreeBuilder('role');
+
+        $node = $treeBuilder->getRootNode()
+            ->addDefaultsIfNotSet()
+            ->canBeUnset()
+            ->children()
+                ->arrayNode('from_email')
+                    ->canBeUnset()
+                    ->children()
+                        ->scalarNode('address')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('sender_name')->isRequired()->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('promoting')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('template')->defaultValue('@APIUser/Role/promoting.txt.twig')->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $node;

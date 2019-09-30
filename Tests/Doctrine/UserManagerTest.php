@@ -61,6 +61,16 @@ class UserManagerTest extends TestCase
         $this->userManager->findUserBy($crit);
     }
 
+    public function testRefreshUser(): void
+    {
+        $user = $this->getUser();
+        $this->om->expects($this->once())
+            ->method('refresh')
+            ->with($user);
+
+        $this->userManager->refreshUser($user);
+    }
+
     public function testUpdateUser(): void
     {
         $user = $this->getUser();

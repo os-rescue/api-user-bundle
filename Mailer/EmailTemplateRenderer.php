@@ -2,7 +2,9 @@
 
 namespace API\UserBundle\Mailer;
 
+use API\UserBundle\Event\UserEvent;
 use API\UserBundle\Model\UserInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 /**
@@ -10,13 +12,16 @@ use Symfony\Component\Templating\EngineInterface;
  */
 class EmailTemplateRenderer implements EmailTemplateRendererInterface
 {
+    private $eventDispatcher;
     private $templating;
     private $emailTemplateUrlGenerator;
 
     public function __construct(
+        EventDispatcherInterface $eventDispatcher,
         EngineInterface $templating,
         EmailTemplateUrlGeneratorInterface $emailTemplateUrlGenerator
     ) {
+        $this->eventDispatcher = $eventDispatcher;
         $this->templating = $templating;
         $this->emailTemplateUrlGenerator = $emailTemplateUrlGenerator;
     }
@@ -27,6 +32,8 @@ class EmailTemplateRenderer implements EmailTemplateRendererInterface
         string $route = null,
         array $templateParams = []
     ): string {
+        $this->eventDispatcher->dispatch(UserEvent::SENT_MAIL, new UserEvent($user));
+
         $url = $this->emailTemplateUrlGenerator->generateRoute($route, $user->getConfirmationToken());
 
         $templateParams = array_merge(

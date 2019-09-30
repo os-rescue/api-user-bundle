@@ -57,10 +57,9 @@ class ResetPasswordRequestSubscriberTest extends KernelTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @expectedExceptionMessage user.not_found.
+     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      */
-    public function testResetPasswordRequestThrowsNotFoundHttpException(): void
+    public function testResetPasswordRequestWithUserNotExist(): void
     {
         $request = new Request([], [], [], [], [], [], \GuzzleHttp\json_encode(['email' => 'foo']));
         $request->attributes->set('_route', ResetPasswordRequestSubscriber::ROUTE_API_RESET_PASSWORD_REQUEST);
@@ -88,10 +87,9 @@ class ResetPasswordRequestSubscriberTest extends KernelTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\LockedException
-     * @expectedExceptionMessage user.account_locked.
+     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      */
-    public function testResetPasswordRequestThrowsLockedException(): void
+    public function testResetPasswordRequestWithAccountLocked(): void
     {
         $request = new Request([], [], [], [], [], [], \GuzzleHttp\json_encode(['email' => 'foo']));
         $request->attributes->set('_route', ResetPasswordRequestSubscriber::ROUTE_API_RESET_PASSWORD_REQUEST);
@@ -121,9 +119,8 @@ class ResetPasswordRequestSubscriberTest extends KernelTestCase
 
     /**
      * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
-     * @expectedExceptionMessage user.check_email.
      */
-    public function testResetPasswordRequestThrowsBadRequestHttpException(): void
+    public function testResetPasswordRequestWithUserHasPasswordRequestedNotExpired(): void
     {
         $request = new Request([], [], [], [], [], [], \GuzzleHttp\json_encode(['email' => 'foo']));
         $request->attributes->set('_route', ResetPasswordRequestSubscriber::ROUTE_API_RESET_PASSWORD_REQUEST);

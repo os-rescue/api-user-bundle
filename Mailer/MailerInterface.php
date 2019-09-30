@@ -11,4 +11,5 @@ interface MailerInterface
     public function sendPasswordChangingEmailMessage(UserInterface $user): int;
     public function sendPasswordSettingEmailMessage(UserInterface $user): int;
     public function sendPasswordResettingEmailMessage(UserInterface $user): int;
+    public function sendRolePromotingEmailMessage(UserInterface $user): int;
 }

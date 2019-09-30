@@ -22,6 +22,7 @@ class PasswordChangingListener implements EventSubscriberInterface
     {
         return [
             UserEvent::CHANGE_PASSWORD_COMPLETED => 'onChangingPassword',
+            UserEvent::RESET_PASSWORD_COMPLETED => 'onChangingPassword',
         ];
     }
 

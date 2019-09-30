@@ -1,0 +1,13 @@
+{% trans_default_domain 'APIUserBundle' %}
+{% block subject %}
+{%- autoescape false -%}
+{{ 'role.promoting.subject'|trans }}
+{%- endautoescape -%}
+{% endblock %}
+
+{% block body_text %}
+{% autoescape false %}
+{{ 'role.promoting.message'|trans({'%username%': user.username}) }}
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}{% endblock %}

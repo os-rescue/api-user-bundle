@@ -17,7 +17,6 @@ class SendPasswordChangingEmailMessageTest extends BaseMailerTestCase
 
         $this->mailer = new Mailer(
             $this->swiftMailer,
-            $this->eventDispatcher,
             $this->renderer,
             $this->parameters
         );
@@ -52,8 +51,6 @@ class SendPasswordChangingEmailMessageTest extends BaseMailerTestCase
         ], $message->getFrom());
 
         $this->assertSameReceiver($message, $emailAddress);
-
-        $this->assertDispatchedUserEvent(UserEvent::SENT_MAIL, 1);
     }
 
     /**
@@ -64,7 +61,5 @@ class SendPasswordChangingEmailMessageTest extends BaseMailerTestCase
     {
         $this->setUserData($emailAddress);
         $this->mailer->sendPasswordChangingEmailMessage($this->user);
-
-        $this->assertDispatchedUserEvent(UserEvent::SENT_MAIL, 0);
     }
 }

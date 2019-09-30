@@ -40,7 +40,7 @@ abstract class User implements UserInterface
      * @var string The email of the user.
      *
      * @ORM\Column(name="email", type="string", length=180)
-     * @Assert\Email(message="invalid")
+     * @Assert\Email(mode="strict", message="invalid")
      * @Assert\Length(
      *     min = 2,
      *     max = 180,
@@ -403,13 +403,10 @@ abstract class User implements UserInterface
 
     public function setSuperAdmin(bool $boolean): UserInterface
     {
-        if (true === $boolean) {
-            $this->addRole(static::ROLE_SUPER_ADMIN);
-        } else {
-            $this->removeRole(static::ROLE_SUPER_ADMIN);
-        }
-
-        return $this;
+        return $boolean ?
+            $this->addRole(static::ROLE_SUPER_ADMIN) :
+            $this->removeRole(static::ROLE_SUPER_ADMIN)
+            ;
     }
 
     public function setPlainPassword(?string $password): UserInterface

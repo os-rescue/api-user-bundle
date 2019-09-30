@@ -23,6 +23,8 @@ class UserEvent extends Event
     public const RESET_PASSWORD_SUCCESSFUL = 'api_user.reset_password.successful';
     public const RESET_PASSWORD_COMPLETED = 'api_user.reset_password.completed';
     public const SENT_MAIL = 'api_user.mail.sent';
+    public const USER_DEMOTED = 'api_user.user.demoted';
+    public const USER_PROMOTED = 'api_user.user.promoted';
 
     protected $user;
 

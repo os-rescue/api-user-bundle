@@ -23,7 +23,6 @@ class PasswordSettingListener implements EventSubscriberInterface
         return [
             UserEvent::SET_PASSWORD_SUCCESSFUL => 'onSetPasswordSuccessful',
             UserEvent::SET_PASSWORD_COMPLETED => 'onSettingPassword',
-            UserEvent::RESET_PASSWORD_COMPLETED => 'onSettingPassword',
         ];
     }
 
